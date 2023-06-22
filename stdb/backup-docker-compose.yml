@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  app:
+    container_name: stdb-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_ENGINE=django.db.backends.postgresql_psycopg2
+        - POSTGRES_DB=stdb
+        - POSTGRES_HOST=db
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    container_name: stdb_db
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
